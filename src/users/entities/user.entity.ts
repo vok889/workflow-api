@@ -2,12 +2,12 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum Role {
-    USER = 'USER',
-    ADMIN = 'ADMIN',
-    MANAGER = 'MANAGER'
+  USER = 'USER',
+  ADMIN = 'ADMIN',
+  MANAGER = 'MANAGER'  
 }
 
-@Entity()
+@Entity('bg_user')
 export class User {
 
     @PrimaryGeneratedColumn()
@@ -18,9 +18,15 @@ export class User {
     })
     username: string;
 
-    @Column()
-    password: string;
+    @Column({
+      nullable: true
+    })
+    description: string; // add
 
     @Column()
-    role: Role
+    password: string;
+    
+    @Column()
+    role: Role;
 }
+

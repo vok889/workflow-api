@@ -1,3 +1,4 @@
+// items.service.ts
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -16,6 +17,19 @@ export class ItemsService {
   create(createItemDto: CreateItemDto) {
     return this.itemRepository.save(createItemDto);
   }
+  
+  searchByIds(ids: number[]) {
+    return this.itemRepository.find({ where: {
+      id: In(ids)
+    } });
+  }
+
+  searchByIdsNativeQuery(ids: number[]) {
+    const placeholders = ids.map((_, index) => `$${index + 1}`).join(',');
+    const query = `SELECT * FROM item WHERE id IN (${placeholders})`;
+    console.log(query)
+    return this.itemRepository.query(query, ids);
+  } 
 
   findAll() {
     return this.itemRepository.find();

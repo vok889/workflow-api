@@ -5,15 +5,20 @@ export enum ItemStatus {
   PENDING = 'PENDING', APPROVED = 'APPROVED', REJECTED = 'REJECTED'
 }
 
-
 @Entity()
 export class Item {
 
   @PrimaryGeneratedColumn()
   id: number;
-
+  
   @Column()
   title: string;
+
+  @Column({
+    nullable: false,
+    default: 'Waiting description'
+  })
+  description: string; // add
 
   @Column()
   amount: number;
@@ -22,7 +27,7 @@ export class Item {
   price: number;
 
   @Column({
-    nullable: true
+      nullable: true
   })
   contactMobileNo: string;
 

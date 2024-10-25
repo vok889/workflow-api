@@ -1,18 +1,20 @@
 import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
-import { LoggedInDto } from '../dto/logged-in.dto';
-import { ConfigService } from '@nestjs/config';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class RefreshJwtStrategy extends PassportStrategy(Strategy, 'refresh-jwt') {
+
     constructor(configService: ConfigService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            secretOrKey: configService.get('JWT_SECRET'),
+            secretOrKey: configService.get('REFRESH_JWT_SECRET')
         })
     }
-    validate(payload: LoggedInDto): LoggedInDto {
-        return payload
+
+    async validate(payload: any) {
+        const { iat, exp, ...loggedInDto } = payload;
+        return loggedInDto
     }
 }

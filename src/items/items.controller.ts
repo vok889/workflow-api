@@ -1,5 +1,5 @@
 // items.controller.ts
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, ParseArrayPipe, Query, UseGuards, BadRequestException } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, UseGuards, Query, ParseArrayPipe, BadRequestException } from '@nestjs/common';
 import { ItemsService } from './items.service';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
@@ -18,6 +18,12 @@ export class ItemsController {
     return this.itemsService.create(createItemDto);
   }
 
+  @Get('search')
+  searchByIds(@Query('ids', new ParseArrayPipe({ items: Number, separator: ',' })) ids: number[]) {
+    // return this.itemsService.searchByIds(ids);
+    return this.itemsService.searchByIdsNativeQuery(ids)
+  }
+
   @UseGuards(JwtAuthGuard)
   @Get()
   findAll() {
@@ -26,16 +32,16 @@ export class ItemsController {
 
   @Get(':id')
   findOne(@Param('id', MsgParseIntPipe) id: number) {
-    return this.itemsService.findOne(id);
+    return this.itemsService.findOne(id); // NaN Not A Number
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateItemDto: UpdateItemDto) {
-    return this.itemsService.update(+id, updateItemDto);
+  update(@Param('id', ParseIntPipe) id: number, @Body() updateItemDto: UpdateItemDto) {
+    return this.itemsService.update(id, updateItemDto);
   }
 
   @Delete(':id')
-  remove(@Param('id', new ParseIntPipe({ exceptionFactory: (errer: string) => (new BadRequestException(`id ควรเป็น int`)) })) id: string) {
+  remove(@Param('id', new ParseIntPipe({ exceptionFactory: () => (new BadRequestException('id ควรเป็น int')) })) id: string) {
     return this.itemsService.remove(+id);
   }
 
@@ -45,4 +51,13 @@ export class ItemsController {
   approve(@Param('id', ParseIntPipe) id: number) {
     return this.itemsService.approve(id);
   }
+
+  // add
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles([Role.ADMIN, Role.MANAGER])
+  @Patch(':id/reject')
+  reject(@Param('id', ParseIntPipe) id: number) {
+    return this.itemsService.reject(id);
+  }
+
 }

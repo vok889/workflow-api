@@ -6,13 +6,20 @@ import { QueryFailedErrorFilter } from './filters/query-failed-error.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  
-  // use validation
-  app.useGlobalPipes(new ValidationPipe())
-  
-  // use filter
+
+  // register: validation pipe
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true }
+    )
+  )
+
+  // register: filter
   const { httpAdapter } = app.get(HttpAdapterHost)
   app.useGlobalFilters(new QueryFailedErrorFilter(httpAdapter))
+
+  app.enableCors(); // add
 
   await app.listen(3000);
 }

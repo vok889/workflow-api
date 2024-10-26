@@ -1,5 +1,1 @@
-export class YearBudgetDto {
-    year: number;
-    total: number;
-  }
-  
+export class Budget {}

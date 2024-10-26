@@ -1,4 +1,4 @@
-// item.entity.ts
+// item.entiry.ts
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 export enum ItemStatus {
@@ -10,15 +10,14 @@ export class Item {
 
   @PrimaryGeneratedColumn()
   id: number;
-  
+
   @Column()
   title: string;
 
   @Column({
-    nullable: false,
-    default: 'Waiting description'
+    nullable: true
   })
-  description: string; // add
+  description: string;
 
   @Column()
   amount: number;
@@ -27,6 +26,7 @@ export class Item {
   price: number;
 
   @Column({
+      name:"contact_mobile_no", // add
       nullable: true
   })
   contactMobileNo: string;

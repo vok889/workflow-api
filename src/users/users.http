@@ -60,3 +60,52 @@ Content-Type: application/json
     "password": "changeit",
     "role": "MANAGER"
 }
+
+# NESTJS budget-api users.http
+
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "u1001",
+    "password": "changeit",
+    "role": "USER"
+}
+
+### create with description
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "u1008",
+    "password": "changeit",
+    "role": "USER",
+    "description": "general user"
+}
+
+###
+### Admin Zone
+###
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "a1001",
+    "password": "changeit",
+    "role": "ADMIN"
+}
+
+###
+### Manager Zone
+###
+### create
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+    "username": "m1001",
+    "password": "changeit",
+    "role": "MANAGER"
+}

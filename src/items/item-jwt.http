@@ -6,7 +6,7 @@ POST http://localhost:3000/auth/login
 Content-Type: application/json
 
 {
-    "username": "u1006",
+    "username": "u1002",
     "password": "changeit"
 }
 
@@ -33,7 +33,7 @@ GET http://localhost:3000/items
 Authorization: Bearer WRONG
 
 ### approve
-PATCH http://localhost:3000/items/4/approve
+PATCH http://localhost:3000/items/1/approve
 Authorization: Bearer {{authToken}}
 
 
